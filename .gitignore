@@ -1,0 +1,77 @@
+# ================================
+# .NET build outputs
+# ================================
+bin/
+obj/
+out/
+
+# ================================
+# User-specific files
+# ================================
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ================================
+# Logs
+# ================================
+*.log
+
+# ================================
+# SQLite databases
+# ================================
+*.db
+*.db-shm
+*.db-wal
+
+# ================================
+# EF Core
+# ================================
+**/Migrations/*
+!**/Migrations/README.md
+
+# ================================
+# Visual Studio / VS Code
+# ================================
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# ================================
+# Rider / JetBrains
+# ================================
+.idea/
+*.sln.iml
+
+# ================================
+# macOS
+# ================================
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# ================================
+# Environment / secrets
+# ================================
+.env
+.env.*
+secrets.json
+appsettings.*.json
+!appsettings.json
+
+# ================================
+# Test artifacts
+# ================================
+TestResults/
+coverage/
+coverage.xml
+*.trx
+
+# ================================
+# Docker (if added later)
+# ================================
+docker-data/

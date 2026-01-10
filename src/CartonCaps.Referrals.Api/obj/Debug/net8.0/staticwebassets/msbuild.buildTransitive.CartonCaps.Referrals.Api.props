@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="../buildMultiTargeting/CartonCaps.Referrals.Api.props" />
-</Project>

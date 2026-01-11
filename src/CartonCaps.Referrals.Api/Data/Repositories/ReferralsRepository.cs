@@ -25,7 +25,7 @@ public class ReferralsRepository : IReferralsRepository
         return await _context.Users.FindAsync(userId);
     }
 
-    public async Task<Referral> CreateReferralAsync(Guid userGuid)
+    public async Task<Referral> CreateReferralAsync(Guid userGuid, string trackingId)
     {
         var user = await _context.Users.FindAsync(userGuid);
         if (user == null)
@@ -39,7 +39,8 @@ public class ReferralsRepository : IReferralsRepository
             CreatedAt = DateTime.UtcNow,
             ExpiresAt = DateTime.UtcNow.AddDays(30),
             Status = ReferralStatus.Pending,
-            TrackingId = Guid.NewGuid().ToString()
+            TrackingId = trackingId,
+            ReferralCode = user.ReferralCode,
         };
 
         _context.Referrals.Add(referral);
@@ -54,5 +55,12 @@ public class ReferralsRepository : IReferralsRepository
         }
        
         return referral;
+    }
+
+    public Task<Referral?> GetByTrackingIdAsync(string trackingId)
+    {
+        return _context.Referrals
+            .Include(r => r.RefereeUser)
+            .FirstOrDefaultAsync(r => r.TrackingId == trackingId);
     }
 }

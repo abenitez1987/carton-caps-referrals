@@ -1,5 +1,8 @@
+using CartonCaps.Referrals.Api.Models.Responses;
 using CartonCaps.Referrals.Api.Services;
+using CartonCaps.Referrals.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -26,11 +29,12 @@ public class ReferralsController : ControllerBase
             return Unauthorized();
         }
 
+        _logger.LogInformation("Fetching referrals for user: {UserId}", userGuid);
         var referral = await _referralsService.GetReferralsAsync(userGuid);
         return Ok(referral);
     }
 
-    [HttpPost()]
+    [HttpPost("Share")]
     [Authorize]
     public async Task<ActionResult<CreateReferralResponse>> Post([FromBody] CreateReferralRequest request)
     {
@@ -41,8 +45,27 @@ public class ReferralsController : ControllerBase
             return Unauthorized();
         }
 
+        _logger.LogInformation("Creating referral for user: {UserId}", userGuid);
         var response = await _referralsService.CreateReferralAsync(userGuid, request);
 
         return Ok(response);
     }
+
+    [HttpGet("Tracking")]
+    [AllowAnonymous]
+    public async Task<ActionResult<ValidateTrackingResponse>> ValidateTrackingIdAsync(string trackingId)
+    {
+        if (string.IsNullOrEmpty(trackingId))
+        {
+            _logger.LogWarning("Tracking ID is null or empty in ValidateTrackingIdAsync");
+            return BadRequest("Tracking ID is required");
+        }
+
+        _logger.LogInformation("Validating tracking ID: {TrackingId}", trackingId);
+        var response = await _referralsService.ValidateTrackingIdAsync(trackingId);
+
+        return Ok(response);
+    }
+
+
 }

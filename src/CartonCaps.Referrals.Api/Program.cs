@@ -2,6 +2,7 @@ using System.Text.Json;
 using CartonCaps.Referrals.Api.Data;
 using CartonCaps.Referrals.Api.Data.Repositories;
 using CartonCaps.Referrals.Api.Services;
+using CartonCaps.Referrals.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
@@ -47,6 +48,9 @@ builder.Services.AddDbContext<ReferralDbContext>(options => options.UseSqlite("D
 
 builder.Services.AddScoped<IReferralsService, ReferralsService>();
 builder.Services.AddScoped<IReferralsRepository, ReferralsRepository>();
+builder.Services.AddScoped<ITrackingGenerator, TrackingGenerator>();
+builder.Services.AddScoped<IDeepLinkGenerator, MockDeepLinkGenerator>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

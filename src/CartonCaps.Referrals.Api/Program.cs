@@ -12,6 +12,17 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ReferralDbContext>(options => options.UseSqlite("Data Source=referrals.db"));
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ReferralDbContext>();
+    context.Database.EnsureCreated();
+
+    if (!context.Users.Any() && !context.Referrals.Any())
+    {
+        DatabaseSeeder.Seed(context);
+    }
+}
+
 app.MapGet("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
 
 // Configure the HTTP request pipeline.

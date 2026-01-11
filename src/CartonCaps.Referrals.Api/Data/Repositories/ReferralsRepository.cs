@@ -15,7 +15,7 @@ public class ReferralsRepository : IReferralsRepository
     public async Task<List<Referral>> GetReferralsByUserIdAsync(Guid userId)
     {
         return await _context.Referrals
-            .Where(r => r.RefereeUserId == userId)
+            .Where(r => r.RefereeUserId == userId && r.Status != ReferralStatus.Completed)
             .Include(r => r.RefereeUser)
             .ToListAsync();
     }

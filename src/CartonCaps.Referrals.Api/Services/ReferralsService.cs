@@ -25,4 +25,16 @@ public class ReferralsService: IReferralsService
             }).ToList()
         };
     }
+
+    public async Task<CreateReferralResponse> CreateReferralAsync(Guid userGuid, CreateReferralRequest request)
+    {
+        var referral = await _referralsRepository.CreateReferralAsync(userGuid);
+
+        return new CreateReferralResponse
+        {
+            TrackingId = referral.TrackingId,
+            CreatedAt = referral.CreatedAt,
+            ExpiresAt = referral.ExpiresAt,
+        };
+    }
 }

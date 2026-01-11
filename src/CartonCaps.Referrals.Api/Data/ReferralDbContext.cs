@@ -38,7 +38,7 @@ public class ReferralDbContext : DbContext
             entity.Property(e => e.Status).IsRequired();
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.CompletedAt);
-            entity.Property(e => e.ExpiresAt);
+            entity.Property(e => e.ExpiresAt).IsRequired();
 
             entity.HasIndex(e => e.TrackingId).IsUnique();
 

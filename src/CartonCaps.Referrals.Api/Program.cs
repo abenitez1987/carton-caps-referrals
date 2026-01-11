@@ -1,3 +1,4 @@
+using System.Text.Json;
 using CartonCaps.Referrals.Api.Data;
 using CartonCaps.Referrals.Api.Data.Repositories;
 using CartonCaps.Referrals.Api.Services;
@@ -37,7 +38,11 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthentication("FakeScheme")
     .AddScheme<AuthenticationSchemeOptions, FakeAuthenticationHandler>("FakeScheme", options => { });
 builder.Services.AddAuthorization();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter(JsonNamingPolicy.CamelCase));
+});
+
 builder.Services.AddDbContext<ReferralDbContext>(options => options.UseSqlite("Data Source=referrals.db"));
 
 builder.Services.AddScoped<IReferralsService, ReferralsService>();

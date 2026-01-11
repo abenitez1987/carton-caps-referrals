@@ -17,16 +17,32 @@ public class ReferralsController : ControllerBase
 
     [HttpGet()]
     [Authorize]
-    public Task<IActionResult> Get()
+    public async Task<ActionResult<ListReferralResponse>> Get()
     {
         var userId = User.FindFirst("userId")?.Value;
         if (userId == null || !Guid.TryParse(userId, out Guid userGuid))
         {   
             _logger.LogWarning("Unauthorized access attempt to Get Referrals");
-            return Task.FromResult<IActionResult>(Unauthorized());
+            return Unauthorized();
         }
 
-        var referral = _referralsService.GetReferralsAsync(userGuid);
-        return Task.FromResult<IActionResult>(Ok(referral));
+        var referral = await _referralsService.GetReferralsAsync(userGuid);
+        return Ok(referral);
+    }
+
+    [HttpPost()]
+    [Authorize]
+    public async Task<ActionResult<CreateReferralResponse>> Post([FromBody] CreateReferralRequest request)
+    {
+        var userId = User.FindFirst("userId")?.Value;
+        if (userId == null || !Guid.TryParse(userId, out Guid userGuid))
+        {   
+            _logger.LogWarning("Unauthorized access attempt to Create Referral");
+            return Unauthorized();
+        }
+
+        var response = await _referralsService.CreateReferralAsync(userGuid, request);
+
+        return Ok(response);
     }
 }

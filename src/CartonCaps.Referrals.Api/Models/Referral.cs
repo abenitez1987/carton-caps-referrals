@@ -12,6 +12,6 @@ public class Referral
     public User? RefereeUser { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
-    public DateTime? ExpiresAt { get; set; }
+    public DateTime ExpiresAt { get; set; }
 }
 

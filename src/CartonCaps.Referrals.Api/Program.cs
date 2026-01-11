@@ -51,6 +51,10 @@ builder.Services.AddScoped<IReferralsRepository, ReferralsRepository>();
 builder.Services.AddScoped<ITrackingGenerator, TrackingGenerator>();
 builder.Services.AddScoped<IDeepLinkGenerator, MockDeepLinkGenerator>();
 
+builder.Services.AddSingleton<IShareContentGenerator, SmsContentGenerator>();
+builder.Services.AddSingleton<IShareContentGenerator, EmailContentGenerator>();
+builder.Services.AddSingleton<IShareContentFactory, ShareContentFactory>();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

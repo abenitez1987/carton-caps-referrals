@@ -25,7 +25,7 @@ public class ReferralsRepository : IReferralsRepository
         return await _context.Users.FindAsync(userId);
     }
 
-    public async Task<Referral> CreateReferralAsync(Guid userGuid, string trackingId)
+    public async Task<Referral> CreateReferralAsync(Guid userGuid, string trackingId, string channel)
     {
         var user = await _context.Users.FindAsync(userGuid);
         if (user == null)
@@ -41,6 +41,7 @@ public class ReferralsRepository : IReferralsRepository
             Status = ReferralStatus.Pending,
             TrackingId = trackingId,
             ReferralCode = user.ReferralCode,
+            Channel = channel
         };
 
         _context.Referrals.Add(referral);

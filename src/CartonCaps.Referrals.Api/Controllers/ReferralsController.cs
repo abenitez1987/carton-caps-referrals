@@ -34,7 +34,7 @@ public class ReferralsController : ControllerBase
         return Ok(referral);
     }
 
-    [HttpPost("Share")]
+    [HttpPost()]
     [Authorize]
     public async Task<ActionResult<CreateReferralResponse>> Post([FromBody] CreateReferralRequest request)
     {
@@ -51,7 +51,7 @@ public class ReferralsController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("Tracking")]
+    [HttpGet("{trackingId}")]
     [AllowAnonymous]
     public async Task<ActionResult<ValidateTrackingResponse>> ValidateTrackingIdAsync(string trackingId)
     {

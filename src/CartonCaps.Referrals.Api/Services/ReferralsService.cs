@@ -7,13 +7,14 @@ public class ReferralsService: IReferralsService
 {
     private readonly IReferralsRepository _referralsRepository;
     private readonly ITrackingGenerator _trackingGenerator;
-
+    private readonly IShareContentFactory _shareContentFactory;
     private readonly IDeepLinkGenerator _deepLinkGenerator;
-    public ReferralsService(IReferralsRepository referralsRepository, ITrackingGenerator trackingGenerator, IDeepLinkGenerator deepLinkGenerator)
+    public ReferralsService(IReferralsRepository referralsRepository, ITrackingGenerator trackingGenerator, IDeepLinkGenerator deepLinkGenerator, IShareContentFactory shareContentFactory)
     {
         _referralsRepository = referralsRepository;
         _trackingGenerator = trackingGenerator;
         _deepLinkGenerator = deepLinkGenerator;
+        _shareContentFactory = shareContentFactory;
     }
     public async Task<ListReferralResponse> GetReferralsAsync(Guid userId)
     {
@@ -25,7 +26,9 @@ public class ReferralsService: IReferralsService
             Data = referrals.Select(r => new ReferralItemResponse
             {
                 Status = r.Status,
-                ReferralName = r.Name != null ? $"{r.Name}" : string.Empty,
+                ReferralName = r.
+                TrackingId = r.TrackingId,
+                Channel = r.Channel,
                 CreatedAt = r.CreatedAt,
                 CompletedAt = r.CompletedAt,
                 ExpiresAt = r.ExpiresAt
@@ -36,10 +39,12 @@ public class ReferralsService: IReferralsService
     public async Task<CreateReferralResponse> CreateReferralAsync(Guid userGuid, CreateReferralRequest request)
     {
         var trackingId = _trackingGenerator.Generate();
-
-        var referral = await _referralsRepository.CreateReferralAsync(userGuid, trackingId);
+        var referral = await _referralsRepository.CreateReferralAsync(userGuid, trackingId, request.Channel);
 
         var shareUrl = _deepLinkGenerator.GenerateDeepLink(trackingId);
+        var shareGenerator = _shareContentFactory.GetGenerator(request.Channel);
+
+        var content = shareGenerator.GenerateContent(referral.ReferralCode, shareUrl);
 
         return new CreateReferralResponse
         {
@@ -47,12 +52,7 @@ public class ReferralsService: IReferralsService
             ShareUrl = shareUrl,
             CreatedAt = referral.CreatedAt,
             ExpiresAt = referral.ExpiresAt,
-            ShareContent = new ShareContentResponse
-            {
-                Type = request?.Channel ?? "sms",
-                Body = $"Join me on CartonCaps and get exclusive rewards! Use my referral link: {shareUrl}",
-                Subject = request?.Channel == "email" ? "Join me on CartonCaps!" : null,
-            }
+            ShareContent = content
         };
     }
 

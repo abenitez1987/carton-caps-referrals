@@ -8,6 +8,7 @@ public class Referral
     public string? Name { get; set; } = string.Empty;
     public string TrackingId { get; set; } = string.Empty;
     public string ReferralCode { get; set; } = string.Empty;
+    public string Channel { get; set; } = string.Empty;
     public Guid? RefereeUserId { get; set; }
     public ReferralStatus Status { get; set; }
     public User? RefereeUser { get; set; }

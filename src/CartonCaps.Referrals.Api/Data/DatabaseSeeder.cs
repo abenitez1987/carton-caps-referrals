@@ -12,17 +12,17 @@ public static class DatabaseSeeder
 
         var user1 = new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
             Email = "andres@test.com",
             FirstName = "Andres",
-            LastName = "Guzman",
+            LastName = "Benitez",
             ReferralCode = "ANDRES123",
             CreatedAt = DateTime.UtcNow.AddMonths(-2)
         };
 
         var user2 = new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("22222222-2222-2222-2222-222222222222"),
             Email = "carlos@test.com",
             FirstName = "Carlos",
             LastName = "Lopez",
@@ -32,7 +32,7 @@ public static class DatabaseSeeder
 
         var user3 = new User
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
             Email = "mafe@test.com",
             FirstName = "Mafe",
             LastName = "Rodriguez",
@@ -45,46 +45,63 @@ public static class DatabaseSeeder
         var referral1 = new Referral
         {
             Id = Guid.NewGuid(),
+            Name = "Lorenzo",
             TrackingId = "track_completed_001",
             RefereeUserId = user1.Id,
             Status = ReferralStatus.Completed,
             RefereeUser = user1,
+            CreatedAt = DateTime.UtcNow.AddDays(-10),
+            CompletedAt = DateTime.UtcNow.AddDays(-5),
+            ExpiresAt = DateTime.UtcNow.AddDays(20)
         };
 
         var referral2 = new Referral
         {
             Id = Guid.NewGuid(),
+            Name = "Emilio",
             TrackingId = "track_pending_001",
             RefereeUserId = user1.Id,
             Status = ReferralStatus.Pending,
             RefereeUser = user1,
+            CreatedAt = DateTime.UtcNow.AddDays(-2),
+            ExpiresAt = DateTime.UtcNow.AddDays(28)
         };
 
         var referral3 = new Referral
         {
             Id = Guid.NewGuid(),
+            Name = "Joaquin",
             TrackingId = "track_completed_002",
             RefereeUserId = user2.Id,
             Status = ReferralStatus.Completed,
             RefereeUser = user2,
+            CreatedAt = DateTime.UtcNow.AddDays(-15),
+            CompletedAt = DateTime.UtcNow.AddDays(-10),
+            ExpiresAt = DateTime.UtcNow.AddDays(15)
         };
 
         var referral4 = new Referral
         {
             Id = Guid.NewGuid(),
+            Name = "Alana",
             TrackingId = "track_pending_002",
             RefereeUserId = user2.Id,
             Status = ReferralStatus.Pending,
             RefereeUser = user2,
+            CreatedAt = DateTime.UtcNow.AddDays(-1),
+            ExpiresAt = DateTime.UtcNow.AddDays(29)
         };
 
         var referral5 = new Referral
         {
             Id = Guid.NewGuid(),
+            Name = "Mario",
             TrackingId = "track_expired_001",
             RefereeUserId = user2.Id,
             Status = ReferralStatus.Expired,
             RefereeUser = user2,
+            CreatedAt = DateTime.UtcNow.AddDays(-40),
+            ExpiresAt = DateTime.UtcNow.AddDays(-10)
         };
         context.Referrals.AddRange(referral1, referral2, referral3, referral4, referral5);
         context.SaveChanges();

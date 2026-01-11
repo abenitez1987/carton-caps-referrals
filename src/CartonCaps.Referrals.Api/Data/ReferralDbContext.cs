@@ -32,9 +32,13 @@ public class ReferralDbContext : DbContext
         modelBuilder.Entity<Referral>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.TrackingId).IsRequired();
             entity.Property(e => e.RefereeUserId);
             entity.Property(e => e.Status).IsRequired();
+            entity.Property(e => e.CreatedAt).IsRequired();
+            entity.Property(e => e.CompletedAt);
+            entity.Property(e => e.ExpiresAt);
 
             entity.HasIndex(e => e.TrackingId).IsUnique();
 

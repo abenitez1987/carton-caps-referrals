@@ -1,4 +1,6 @@
 using CartonCaps.Referrals.Api.Data;
+using CartonCaps.Referrals.Api.Data.Repositories;
+using CartonCaps.Referrals.Api.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,9 +37,11 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddAuthentication("FakeScheme")
     .AddScheme<AuthenticationSchemeOptions, FakeAuthenticationHandler>("FakeScheme", options => { });
 builder.Services.AddAuthorization();
-
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ReferralDbContext>(options => options.UseSqlite("Data Source=referrals.db"));
+
+builder.Services.AddScoped<IReferralsService, ReferralsService>();
+builder.Services.AddScoped<IReferralsRepository, ReferralsRepository>();
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

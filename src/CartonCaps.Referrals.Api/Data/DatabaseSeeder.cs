@@ -45,11 +45,12 @@ public static class DatabaseSeeder
         var referral1 = new Referral
         {
             Id = Guid.NewGuid(),
-            Name = "Lorenzo",
+            RefereeName = "Lorenzo",
+            Channel = "EMAIL",
             TrackingId = "track_completed_001",
-            RefereeUserId = user1.Id,
+            ReferrerUserId = user1.Id,
             Status = ReferralStatus.Completed,
-            RefereeUser = user1,
+            ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-10),
             CompletedAt = DateTime.UtcNow.AddDays(-5),
             ExpiresAt = DateTime.UtcNow.AddDays(20)
@@ -58,11 +59,12 @@ public static class DatabaseSeeder
         var referral2 = new Referral
         {
             Id = Guid.NewGuid(),
-            Name = "Emilio",
+            RefereeName = null,
+            Channel = "SMS",
             TrackingId = "track_pending_001",
-            RefereeUserId = user1.Id,
+            ReferrerUserId = user1.Id,
             Status = ReferralStatus.Pending,
-            RefereeUser = user1,
+            ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-2),
             ExpiresAt = DateTime.UtcNow.AddDays(28)
         };
@@ -70,11 +72,12 @@ public static class DatabaseSeeder
         var referral3 = new Referral
         {
             Id = Guid.NewGuid(),
-            Name = "Joaquin",
+            RefereeName = "Joaquin",
+            Channel = "SMS",
             TrackingId = "track_completed_002",
-            RefereeUserId = user2.Id,
+            ReferrerUserId = user1.Id,
             Status = ReferralStatus.Completed,
-            RefereeUser = user2,
+            ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-15),
             CompletedAt = DateTime.UtcNow.AddDays(-10),
             ExpiresAt = DateTime.UtcNow.AddDays(15)
@@ -83,11 +86,12 @@ public static class DatabaseSeeder
         var referral4 = new Referral
         {
             Id = Guid.NewGuid(),
-            Name = "Alana",
+            RefereeName = null,
+            Channel = "EMAIL",
             TrackingId = "track_pending_002",
-            RefereeUserId = user2.Id,
+            ReferrerUserId = user2.Id,
             Status = ReferralStatus.Pending,
-            RefereeUser = user2,
+            ReferrerUser = user2,
             CreatedAt = DateTime.UtcNow.AddDays(-1),
             ExpiresAt = DateTime.UtcNow.AddDays(29)
         };
@@ -95,11 +99,12 @@ public static class DatabaseSeeder
         var referral5 = new Referral
         {
             Id = Guid.NewGuid(),
-            Name = "Mario",
+            RefereeName = null,
+            Channel = "SMS",
             TrackingId = "track_expired_001",
-            RefereeUserId = user2.Id,
+            ReferrerUserId = user2.Id,
             Status = ReferralStatus.Expired,
-            RefereeUser = user2,
+            ReferrerUser = user2,
             CreatedAt = DateTime.UtcNow.AddDays(-40),
             ExpiresAt = DateTime.UtcNow.AddDays(-10)
         };

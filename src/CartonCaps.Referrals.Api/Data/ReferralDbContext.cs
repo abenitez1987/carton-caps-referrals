@@ -32,9 +32,13 @@ public class ReferralDbContext : DbContext
         modelBuilder.Entity<Referral>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).HasMaxLength(100);
-            entity.Property(e => e.TrackingId).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.Id).IsRequired();
+             entity.Property(e => e.ReferrerUserId).IsRequired();
+
+            entity.Property(e => e.RefereeName).HasMaxLength(100); 
             entity.Property(e => e.RefereeUserId);
+
+            entity.Property(e => e.TrackingId).IsRequired().HasMaxLength(50);
             entity.Property(e => e.Status).IsRequired();
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.CompletedAt);
@@ -43,9 +47,9 @@ public class ReferralDbContext : DbContext
 
             entity.HasIndex(e => e.TrackingId).IsUnique();
 
-            entity.HasOne(e => e.RefereeUser)
+            entity.HasOne(e => e.ReferrerUser)
                   .WithMany(e => e.Referrals)
-                  .HasForeignKey(e => e.RefereeUserId)
+                  .HasForeignKey(e => e.ReferrerUserId)
                   .OnDelete(DeleteBehavior.Cascade);
 
         });

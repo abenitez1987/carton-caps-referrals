@@ -15,8 +15,9 @@ public class ReferralsRepository : IReferralsRepository
     public async Task<List<Referral>> GetReferralsByUserIdAsync(Guid userId)
     {
         return await _context.Referrals
-            .Where(r => r.RefereeUserId == userId && r.Status != ReferralStatus.Completed)
-            .Include(r => r.RefereeUser)
+            .Where(r => r.ReferrerUserId == userId && r.Status == ReferralStatus.Completed)
+            .Include(r => r.ReferrerUser)
+            .OrderByDescending(r => r.CreatedAt)
             .ToListAsync();
     }
 
@@ -35,9 +36,10 @@ public class ReferralsRepository : IReferralsRepository
 
         var referral = new Referral
         {
-            RefereeUserId = userGuid,
+            Id = Guid.NewGuid(),
+            ReferrerUserId = userGuid,
             CreatedAt = DateTime.UtcNow,
-            ExpiresAt = DateTime.UtcNow.AddDays(30),
+            ExpiresAt = DateTime.UtcNow.AddDays(7),
             Status = ReferralStatus.Pending,
             TrackingId = trackingId,
             ReferralCode = user.ReferralCode,
@@ -50,7 +52,7 @@ public class ReferralsRepository : IReferralsRepository
         {
              await _context.SaveChangesAsync();
 
-        } catch (DbUpdateException ex)
+        } catch (Exception ex)
         {
             throw new Exception("An error occurred while creating the referral", ex);
         }
@@ -61,7 +63,7 @@ public class ReferralsRepository : IReferralsRepository
     public Task<Referral?> GetByTrackingIdAsync(string trackingId)
     {
         return _context.Referrals
-            .Include(r => r.RefereeUser)
+            .Include(r => r.ReferrerUser)
             .FirstOrDefaultAsync(r => r.TrackingId == trackingId);
     }
 }

@@ -22,12 +22,10 @@ public class ReferralsService: IReferralsService
 
         return new ListReferralResponse
         {
-            ReferralCode = referrals.FirstOrDefault()?.RefereeUser?.ReferralCode ?? string.Empty,
             Data = referrals.Select(r => new ReferralItemResponse
             {
                 Status = r.Status,
-                ReferralName = r.
-                TrackingId = r.TrackingId,
+                RefereeName = r.RefereeName,
                 Channel = r.Channel,
                 CreatedAt = r.CreatedAt,
                 CompletedAt = r.CompletedAt,
@@ -68,10 +66,19 @@ public class ReferralsService: IReferralsService
             };
         }
 
+        if (referral.ExpiresAt <= DateTime.UtcNow)
+        {
+            return new ValidateTrackingResponse
+            {
+                Valid = false,
+                Error = "Referral Expired",
+                Message = "The referral link has expired."
+            };
+        }
+
         return new ValidateTrackingResponse
         {
             Valid = referral.ExpiresAt > DateTime.UtcNow,
-            ExpiresAt = referral.ExpiresAt,
             ReferralCode = referral.ReferralCode,
         };
     }

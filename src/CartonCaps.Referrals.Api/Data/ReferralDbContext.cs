@@ -43,7 +43,7 @@ public class ReferralDbContext : DbContext
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.CompletedAt);
             entity.Property(e => e.ExpiresAt).IsRequired();
-            entity.Property(e => e.ReferrerCode).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.ReferrerCode).HasMaxLength(20);
 
             entity.HasIndex(e => e.TrackingId).IsUnique();
 

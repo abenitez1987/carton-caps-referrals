@@ -26,7 +26,7 @@ public class ReferralDbContext : DbContext
             entity.Property(e => e.CreatedAt).IsRequired();
 
             entity.HasIndex(e => e.Email).IsUnique();
-            entity.HasIndex(e => e.ReferredByCode).IsUnique();
+            entity.HasIndex(e => e.ReferredByCode);
         });
 
         modelBuilder.Entity<Referral>(entity =>

@@ -2,9 +2,9 @@ using CartonCaps.Referrals.Api.Models.Responses;
 using CartonCaps.Referrals.Api.Services;
 using CartonCaps.Referrals.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
+namespace CartonCaps.Referrals.Api.Controllers;
 [ApiController]
 [Route("api/v1/[controller]")]
 public class ReferralsController : ControllerBase
@@ -17,10 +17,14 @@ public class ReferralsController : ControllerBase
         _referralsService = referralsService;
     }
 
-
-    [HttpGet()]
+    /// <summary>
+    /// Get Referrals for the authenticated user
+    /// </summary>
+    [HttpGet]
     [Authorize]
-    public async Task<ActionResult<ListReferralResponse>> Get()
+    [ProducesResponseType(typeof(ListReferralResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<ListReferralResponse>> GetReferrals()
     {
         var userId = User.FindFirst("userId")?.Value;
         if (userId == null || !Guid.TryParse(userId, out Guid userGuid))
@@ -34,10 +38,22 @@ public class ReferralsController : ControllerBase
         return Ok(referral);
     }
 
-    [HttpPost()]
+    /// <summary>
+    ///  Create a new Referral for the authenticated user
+    /// </summary>
+    /// <param name="request"></param>
+    [HttpPost]
     [Authorize]
-    public async Task<ActionResult<CreateReferralResponse>> Post([FromBody] CreateReferralRequest request)
+    [ProducesResponseType(typeof(CreateReferralResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<CreateReferralResponse>> CreateReferral([FromBody] CreateReferralRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         var userId = User.FindFirst("userId")?.Value;
         if (userId == null || !Guid.TryParse(userId, out Guid userGuid))
         {   
@@ -48,14 +64,24 @@ public class ReferralsController : ControllerBase
         _logger.LogInformation("Creating referral for user: {UserId}", userGuid);
         var response = await _referralsService.CreateReferralAsync(userGuid, request);
 
-        return Ok(response);
+        return CreatedAtAction(
+            nameof(CreateReferral), 
+            new { trackingId = response.TrackingId }, 
+            response
+        );
     }
 
+    /// <summary>
+    /// Validate a tracking ID
+    /// </summary>
+    /// <param name="trackingId"></param>
     [HttpGet("{trackingId}")]
     [AllowAnonymous]
-    public async Task<ActionResult<ValidateTrackingResponse>> ValidateTrackingIdAsync(string trackingId)
+    [ProducesResponseType(typeof(ValidateTrackingResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<ValidateTrackingResponse>> ValidateTracking(string trackingId)
     {
-        if (string.IsNullOrEmpty(trackingId))
+        if (string.IsNullOrWhiteSpace(trackingId))
         {
             _logger.LogWarning("Tracking ID is null or empty in ValidateTrackingIdAsync");
             return BadRequest("Tracking ID is required");
@@ -66,6 +92,4 @@ public class ReferralsController : ControllerBase
 
         return Ok(response);
     }
-
-
 }

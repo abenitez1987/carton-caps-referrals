@@ -24,7 +24,7 @@ public class ReferralsRepository : IReferralsRepository
             query = query.Where(r => r.Status == statusEnum);
         }
         
-        return await _context.Referrals
+        return await query
             .OrderByDescending(r => r.CreatedAt)
             .ToListAsync();
     }

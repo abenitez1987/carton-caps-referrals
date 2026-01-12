@@ -108,7 +108,21 @@ public static class DatabaseSeeder
             CreatedAt = DateTime.UtcNow.AddDays(-40),
             ExpiresAt = DateTime.UtcNow.AddDays(-10)
         };
-        context.Referrals.AddRange(referral1, referral2, referral3, referral4, referral5);
+
+        var referral6 = new Referral
+        {
+            Id = Guid.NewGuid(),
+            RefereeName = null,
+            Channel = "email",
+            TrackingId = "track_completed_003",
+            ReferrerUserId = user1.Id,
+            Status = ReferralStatus.Expired,
+            ReferrerUser = user1,
+            CreatedAt = DateTime.UtcNow.AddDays(-20),
+            CompletedAt = null,
+            ExpiresAt = DateTime.UtcNow.AddDays(-10)
+        };
+        context.Referrals.AddRange(referral1, referral2, referral3, referral4, referral5, referral6);
         context.SaveChanges();
     }
 }

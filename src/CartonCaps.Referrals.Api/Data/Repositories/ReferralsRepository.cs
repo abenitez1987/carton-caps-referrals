@@ -34,7 +34,7 @@ public class ReferralsRepository : IReferralsRepository
         var user = await _context.Users.FindAsync(userGuid);
         if (user == null)
         {
-            throw new Exception("User not found");
+            return null;
         }
 
         var referral = new Referral
@@ -51,15 +51,7 @@ public class ReferralsRepository : IReferralsRepository
 
         _context.Referrals.Add(referral);
 
-        try
-        {
-             await _context.SaveChangesAsync();
-
-        } catch (Exception ex)
-        {
-            throw new Exception("An error occurred while creating the referral", ex);
-        }
-       
+        await _context.SaveChangesAsync();
         return referral;
     }
 

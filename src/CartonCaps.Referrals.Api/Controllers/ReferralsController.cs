@@ -67,6 +67,10 @@ public class ReferralsController : ControllerBase
 
         _logger.LogInformation("Creating referral for user: {UserId}", userGuid);
         var response = await _referralsService.CreateReferralAsync(userGuid, request);
+        if (response == null)
+        {
+            return BadRequest("Unable to create referral for the given user.");
+        }
 
         return CreatedAtAction(
             nameof(CreateReferral), 

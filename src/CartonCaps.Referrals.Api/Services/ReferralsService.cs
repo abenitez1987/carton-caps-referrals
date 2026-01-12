@@ -42,10 +42,16 @@ public class ReferralsService: IReferralsService
         };
     }
 
-    public async Task<CreateReferralResponse> CreateReferralAsync(Guid userGuid, CreateReferralRequest request)
+    public async Task<CreateReferralResponse?> CreateReferralAsync(Guid userGuid, CreateReferralRequest request)
     {
         var trackingId = _trackingGenerator.Generate();
         var referral = await _referralsRepository.CreateReferralAsync(userGuid, trackingId, request.Channel);
+
+        if (referral == null)
+        {
+            _logger.LogWarning("User not found when creating referral: {UserId}", userGuid);
+            return null;
+        }
 
         var shareUrl = _deepLinkGenerator.GenerateDeepLink(trackingId);
         var allContent = _shareContentService.GeneateAllContent(referral.ReferralCode, shareUrl);

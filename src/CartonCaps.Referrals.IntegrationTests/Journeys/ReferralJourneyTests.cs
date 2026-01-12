@@ -7,6 +7,7 @@ using CartonCaps.Referrals.IntegrationTests;
 using FluentAssertions;
 using Xunit;
 
+namespace CartonCaps.Referrals.IntegrationTests.Journeys; 
 public class ReferralJourneyTests : IntegrationTestBase
 {
     public ReferralJourneyTests(CustomWebApplicationFactory factory) : base(factory)
@@ -83,7 +84,7 @@ public class ReferralJourneyTests : IntegrationTestBase
          var userA = "11111111-1111-1111-1111-111111111111";
         SetAuthHeader(userA);
 
-        var createRequest = new CreateReferralRequest { Channel = "sms" };
+        var createRequest = new CreateReferralRequest { Channel = "sms", ReferrerCode="ANDRES123" };
         var createResponse = await _client.PostAsJsonAsync("/api/v1/referrals", createRequest);
 
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
@@ -117,9 +118,11 @@ public class ReferralJourneyTests : IntegrationTestBase
 
     [Fact]
     public async Task Journey_ExpiredTracking_ReturnInvalid()
-    {
-        var expiredTrackingId = await CreateExpiredReferralInDb();
+    {   
+        ResetDatabase();
         ClearAuthHeader();
+        var expiredTrackingId = await CreateExpiredReferralInDb();
+
         
         var response = await _client.GetAsync($"/api/v1/referrals/{expiredTrackingId}");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -136,7 +139,8 @@ public class ReferralJourneyTests : IntegrationTestBase
     [Fact]
     public async Task Journey_NonExistentTracking_ReturnsInvalid()
     {
-         ClearAuthHeader();
+        ResetDatabase();
+        ClearAuthHeader();
         
         var nonExistentTracking = "trk_1768240747_a78a7496";
         var response = await _client.GetAsync($"/api/v1/referrals/{nonExistentTracking}");
@@ -192,5 +196,12 @@ public class ReferralJourneyTests : IntegrationTestBase
         await db.SaveChangesAsync();
 
         return referredUser.Id.ToString();
-    } 
+    }
+
+    protected void ResetDatabase()
+    {
+        var db = GetDbContext();
+        db.Referrals.RemoveRange(db.Referrals);
+        db.SaveChanges();
+    }
 }

@@ -100,4 +100,15 @@ public class ReferralsController : ControllerBase
 
         return Ok(response);
     }
+
+    // TODO: Complete referral redemption when the User microservice call us in order to update the referral table
+    /// Business Rules:
+    /// - Tracking must exist and be PENDING
+    /// - Tracking must not be expired
+    /// - Each tracking can only be redeemed once
+    /// - Self-referral prevention (referrerUserId != refereeUserId)
+    ///[HttpPost("complete")]
+    //public async Task<ActionResult<CompleteReferralResponse>> CompleteReferral(
+    //     [FromBody] CompleteReferralRequest request)
+    // {}
 }

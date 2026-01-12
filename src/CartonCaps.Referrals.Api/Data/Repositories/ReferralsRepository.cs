@@ -29,7 +29,7 @@ public class ReferralsRepository : IReferralsRepository
             .ToListAsync();
     }
 
-    public async Task<Referral> CreateReferralAsync(Guid userGuid, string trackingId, string channel)
+    public async Task<Referral?> CreateReferralAsync(Guid userGuid, string trackingId, string channel, string referrerCode)
     {
         var user = await _context.Users.FindAsync(userGuid);
         if (user == null)
@@ -45,7 +45,7 @@ public class ReferralsRepository : IReferralsRepository
             ExpiresAt = DateTime.UtcNow.AddDays(7),
             Status = ReferralStatus.Pending,
             TrackingId = trackingId,
-            ReferralCode = user.ReferralCode,
+            ReferrerCode = referrerCode,
             Channel = channel
         };
 

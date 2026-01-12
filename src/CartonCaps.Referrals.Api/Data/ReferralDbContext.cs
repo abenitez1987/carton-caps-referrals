@@ -22,11 +22,11 @@ public class ReferralDbContext : DbContext
             entity.Property(e => e.Email).IsRequired().HasMaxLength(255);
             entity.Property(e => e.FirstName).IsRequired().HasMaxLength(100);
             entity.Property(e => e.LastName).IsRequired().HasMaxLength(100);
-            entity.Property(e => e.ReferralCode).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.ReferredByCode).HasMaxLength(20);
             entity.Property(e => e.CreatedAt).IsRequired();
 
             entity.HasIndex(e => e.Email).IsUnique();
-            entity.HasIndex(e => e.ReferralCode).IsUnique();
+            entity.HasIndex(e => e.ReferredByCode).IsUnique();
         });
 
         modelBuilder.Entity<Referral>(entity =>
@@ -43,7 +43,7 @@ public class ReferralDbContext : DbContext
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.CompletedAt);
             entity.Property(e => e.ExpiresAt).IsRequired();
-            entity.Property(e => e.ReferralCode).IsRequired().HasMaxLength(20);
+            entity.Property(e => e.ReferrerCode).IsRequired().HasMaxLength(20);
 
             entity.HasIndex(e => e.TrackingId).IsUnique();
 

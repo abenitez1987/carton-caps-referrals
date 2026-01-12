@@ -56,7 +56,6 @@ public class CustomWebApplicationFactory : WebApplicationFactory<Program>
             Email = "andres@test.com",
             FirstName = "Andres",
             LastName = "Benitez",
-            ReferralCode = "ANDRES123",
             CreatedAt = DateTime.UtcNow.AddMonths(-2)
         });
 

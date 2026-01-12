@@ -6,7 +6,7 @@ public class User
     public string Email { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
-    public string ReferralCode { get; set; } = string.Empty;
+    public string ReferredByCode { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public ICollection<Referral> Referrals { get; set; } = new List<Referral>();
 }

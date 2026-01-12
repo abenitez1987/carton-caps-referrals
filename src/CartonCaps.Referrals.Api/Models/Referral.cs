@@ -6,7 +6,7 @@ public class Referral
 {
     public Guid Id { get; set; }
     public string TrackingId { get; set; } = string.Empty;
-    public string ReferralCode { get; set; } = string.Empty;
+    public string ReferrerCode { get; set; } = string.Empty;
     public string Channel { get; set; } = string.Empty;
 
     public Guid? ReferrerUserId { get; set; }

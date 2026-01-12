@@ -16,7 +16,6 @@ public static class DatabaseSeeder
             Email = "andres@test.com",
             FirstName = "Andres",
             LastName = "Benitez",
-            ReferralCode = "ANDRES123",
             CreatedAt = DateTime.UtcNow.AddMonths(-2)
         };
 
@@ -26,21 +25,10 @@ public static class DatabaseSeeder
             Email = "carlos@test.com",
             FirstName = "Carlos",
             LastName = "Lopez",
-            ReferralCode = "CARLOS123",
             CreatedAt = DateTime.UtcNow.AddMonths(-1)
         };
 
-        var user3 = new User
-        {
-            Id = Guid.Parse("33333333-3333-3333-3333-333333333333"),
-            Email = "mafe@test.com",
-            FirstName = "Mafe",
-            LastName = "Rodriguez",
-            ReferralCode = "MAFE123",
-            CreatedAt = DateTime.UtcNow.AddMonths(-3)
-        };
-
-        context.Users.AddRange(user1, user2, user3);
+        context.Users.AddRange(user1, user2);
 
         var referral1 = new Referral
         {
@@ -50,6 +38,7 @@ public static class DatabaseSeeder
             TrackingId = "track_completed_001",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Completed,
+            ReferrerCode = "ANDRES123",
             ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-10),
             CompletedAt = DateTime.UtcNow.AddDays(-5),
@@ -64,6 +53,7 @@ public static class DatabaseSeeder
             TrackingId = "track_pending_001",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Pending,
+            ReferrerCode = "ANDRES123",
             ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-2),
             ExpiresAt = DateTime.UtcNow.AddDays(28)
@@ -77,6 +67,7 @@ public static class DatabaseSeeder
             TrackingId = "track_completed_002",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Completed,
+            ReferrerCode = "ANDRES123",
             ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-15),
             CompletedAt = DateTime.UtcNow.AddDays(-10),
@@ -91,6 +82,7 @@ public static class DatabaseSeeder
             TrackingId = "track_pending_002",
             ReferrerUserId = user2.Id,
             Status = ReferralStatus.Pending,
+             ReferrerCode = "CARLOS123",
             ReferrerUser = user2,
             CreatedAt = DateTime.UtcNow.AddDays(-1),
             ExpiresAt = DateTime.UtcNow.AddDays(29)
@@ -103,6 +95,7 @@ public static class DatabaseSeeder
             Channel = "sms",
             TrackingId = "track_expired_001",
             ReferrerUserId = user2.Id,
+             ReferrerCode = "CARLOS123",
             Status = ReferralStatus.Expired,
             ReferrerUser = user2,
             CreatedAt = DateTime.UtcNow.AddDays(-40),
@@ -117,6 +110,7 @@ public static class DatabaseSeeder
             TrackingId = "track_completed_003",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Expired,
+             ReferrerCode = "ANDRES123",
             ReferrerUser = user1,
             CreatedAt = DateTime.UtcNow.AddDays(-20),
             CompletedAt = null,

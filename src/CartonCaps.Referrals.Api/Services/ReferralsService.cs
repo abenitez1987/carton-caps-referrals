@@ -45,7 +45,7 @@ public class ReferralsService: IReferralsService
     public async Task<CreateReferralResponse?> CreateReferralAsync(Guid userGuid, CreateReferralRequest request)
     {
         var trackingId = _trackingGenerator.Generate();
-        var referral = await _referralsRepository.CreateReferralAsync(userGuid, trackingId, request.Channel);
+        var referral = await _referralsRepository.CreateReferralAsync(userGuid, trackingId, request.Channel, request.ReferrerCode);
 
         if (referral == null)
         {
@@ -54,7 +54,7 @@ public class ReferralsService: IReferralsService
         }
 
         var shareUrl = _deepLinkGenerator.GenerateDeepLink(trackingId);
-        var allContent = _shareContentService.GeneateAllContent(referral.ReferralCode, shareUrl);
+        var allContent = _shareContentService.GeneateAllContent(referral.ReferrerCode, shareUrl);
 
         return new CreateReferralResponse
         {
@@ -108,7 +108,7 @@ public class ReferralsService: IReferralsService
         return new ValidateTrackingResponse
         {
             Valid = true,
-            ReferralCode = referral.ReferralCode,
+            ReferrerCode = referral.ReferrerCode,
             ReferrerName = referral.ReferrerUser?.FirstName ?? string.Empty
         };
     }

@@ -12,18 +12,21 @@ public class ReferralsRepository : IReferralsRepository
         _context = context;
     }
 
-    public async Task<List<Referral>> GetReferralsByUserIdAsync(Guid userId)
+    public async Task<List<Referral>> GetReferralsByUserIdAsync(Guid userId, string? status)
     {
-        return await _context.Referrals
-            .Where(r => r.ReferrerUserId == userId && r.Status == ReferralStatus.Completed)
+        var query = _context.Referrals
+            .Where(r => r.ReferrerUserId == userId)
             .Include(r => r.ReferrerUser)
+            .AsQueryable();
+        
+        if (!string.IsNullOrWhiteSpace(status) && status.ToUpper() != "ALL" && Enum.TryParse<ReferralStatus>(status, true, out var statusEnum))
+        {
+            query = query.Where(r => r.Status == statusEnum);
+        }
+        
+        return await _context.Referrals
             .OrderByDescending(r => r.CreatedAt)
             .ToListAsync();
-    }
-
-    public async Task<User?> GetUserByIdAsync(Guid userId)
-    {
-        return await _context.Users.FindAsync(userId);
     }
 
     public async Task<Referral> CreateReferralAsync(Guid userGuid, string trackingId, string channel)

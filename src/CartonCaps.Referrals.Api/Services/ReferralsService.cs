@@ -3,6 +3,7 @@ using CartonCaps.Referrals.Api.Data.Repositories;
 using CartonCaps.Referrals.Api.Models.enums;
 using CartonCaps.Referrals.Api.Models.Responses;
 using CartonCaps.Referrals.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CartonCaps.Referrals.Api.Services;
 public class ReferralsService: IReferralsService
@@ -23,9 +24,9 @@ public class ReferralsService: IReferralsService
         _shareContentService = shareContentFactory;
         _logger = logger;
     }
-    public async Task<ListReferralResponse> GetReferralsAsync(Guid userId)
+    public async Task<ListReferralResponse> GetReferralsAsync(Guid userId, string? status = null)
     {
-        var referrals = await _referralsRepository.GetReferralsByUserIdAsync(userId);
+        var referrals = await _referralsRepository.GetReferralsByUserIdAsync(userId, status);
 
         return new ListReferralResponse
         {

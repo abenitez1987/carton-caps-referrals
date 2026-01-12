@@ -20,11 +20,15 @@ public class ReferralsController : ControllerBase
     /// <summary>
     /// Get Referrals for the authenticated user
     /// </summary>
+    /// <param name="status">
+    /// Optional filter by status: PENDING, COMPLETED, EXPIRED, ALL.
+    /// If not provided, returns all referrals.
+    /// </param>
     [HttpGet]
     [Authorize]
     [ProducesResponseType(typeof(ListReferralResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<ActionResult<ListReferralResponse>> GetReferrals()
+    public async Task<ActionResult<ListReferralResponse>> GetReferrals([FromQuery] string? status = null)
     {
         var userId = User.FindFirst("userId")?.Value;
         if (userId == null || !Guid.TryParse(userId, out Guid userGuid))
@@ -34,7 +38,7 @@ public class ReferralsController : ControllerBase
         }
 
         _logger.LogInformation("Fetching referrals for user: {UserId}", userGuid);
-        var referral = await _referralsService.GetReferralsAsync(userGuid);
+        var referral = await _referralsService.GetReferralsAsync(userGuid, status);
         return Ok(referral);
     }
 

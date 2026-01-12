@@ -4,7 +4,6 @@ namespace CartonCaps.Referrals.Api.Data.Repositories;
 public interface IReferralsRepository
 {
     Task<Referral> CreateReferralAsync(Guid userGuid, string trackingId, string channel);
-    Task<List<Referral>> GetReferralsByUserIdAsync(Guid userId);
+    Task<List<Referral>> GetReferralsByUserIdAsync(Guid userId, string? status);
     Task<Referral?> GetByTrackingIdAsync(string trackingId);
-    Task<User?> GetUserByIdAsync(Guid userId);
 }

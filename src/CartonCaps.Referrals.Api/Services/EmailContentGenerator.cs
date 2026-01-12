@@ -1,8 +1,8 @@
 namespace CartonCaps.Referrals.Api.Services;
 public class EmailContentGenerator : IShareContentGenerator
 {
-    public string ChannelType => "EMAIL";
-    public ShareContentResponse GenerateContent(string referralCode, string shareUrl)
+    public string ChannelType => "email";
+    public object GenerateContent(string referralCode, string shareUrl)
     {
         var subject = "You're invited to try the Carton Caps app!";
         var body = "Hey!\n\n" +
@@ -14,8 +14,7 @@ public class EmailContentGenerator : IShareContentGenerator
                    $"Download the Carton Caps app here: {shareUrl}\n" +
                    $"(referral_code={referralCode})";
 
-        return new ShareContentResponse
-        {
+        return new {
             Type = ChannelType,
             Subject = subject,
             Body = body

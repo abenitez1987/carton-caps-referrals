@@ -53,7 +53,7 @@ builder.Services.AddScoped<IDeepLinkGenerator, MockDeepLinkGenerator>();
 
 builder.Services.AddSingleton<IShareContentGenerator, SmsContentGenerator>();
 builder.Services.AddSingleton<IShareContentGenerator, EmailContentGenerator>();
-builder.Services.AddSingleton<IShareContentFactory, ShareContentFactory>();
+builder.Services.AddSingleton<IShareContentService, ShareContentService>();
 
 var app = builder.Build();
 

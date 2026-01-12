@@ -1,5 +1,5 @@
 public interface IShareContentGenerator
 {
     string ChannelType { get; }
-    ShareContentResponse GenerateContent(string referralCode, string shareUrl);
+    object GenerateContent(string referralCode, string shareUrl);
 }

@@ -46,7 +46,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             RefereeName = "Lorenzo",
-            Channel = "EMAIL",
+            Channel = "email",
             TrackingId = "track_completed_001",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Completed,
@@ -60,7 +60,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             RefereeName = null,
-            Channel = "SMS",
+            Channel = "sms",
             TrackingId = "track_pending_001",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Pending,
@@ -73,7 +73,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             RefereeName = "Joaquin",
-            Channel = "SMS",
+            Channel = "sms",
             TrackingId = "track_completed_002",
             ReferrerUserId = user1.Id,
             Status = ReferralStatus.Completed,
@@ -87,7 +87,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             RefereeName = null,
-            Channel = "EMAIL",
+            Channel = "email",
             TrackingId = "track_pending_002",
             ReferrerUserId = user2.Id,
             Status = ReferralStatus.Pending,
@@ -100,7 +100,7 @@ public static class DatabaseSeeder
         {
             Id = Guid.NewGuid(),
             RefereeName = null,
-            Channel = "SMS",
+            Channel = "sms",
             TrackingId = "track_expired_001",
             ReferrerUserId = user2.Id,
             Status = ReferralStatus.Expired,
